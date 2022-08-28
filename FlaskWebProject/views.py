@@ -22,6 +22,7 @@ imageSourceUrl = 'https://' + app.config['BLOB_ACCOUNT'] + '.blob.core.windows.n
 @login_required
 def home():
     user = User.query.filter_by(username=current_user.username).first_or_404()
+    app.logger.info('Login success home by user')
     posts = Post.query.all()
     return render_template(
         'index.html',
@@ -116,10 +117,11 @@ def logout():
         # Wipe out user and its token cache from session
         session.clear()
         # Also logout from your tenant's web session
+        app.logger.info('Logout and clear all session')
         return redirect(
             Config.AUTHORITY + "/oauth2/v2.0/logout" +
             "?post_logout_redirect_uri=" + url_for("login", _external=True))
-
+    app.logger.info('Logout and clear all session')
     return redirect(url_for('login'))
 
 
