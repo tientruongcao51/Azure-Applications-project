@@ -35,3 +35,5 @@ The best option for this CMS App is App Service. Allowing the developer to focus
 App Service are hardware limitations, such as a maximum of 14GB of memory and 4 vCPU cores per instance
 
 We will need the VM if the app need to have high processor, as example need to have image processing (like image editing, image analysis, etc), video processing, etc.
+
+![image](https://user-images.githubusercontent.com/32028093/187127558-2a1c6a1b-7e22-49c0-8435-62131b8eea13.png)
