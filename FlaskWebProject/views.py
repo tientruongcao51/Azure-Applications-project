@@ -72,6 +72,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         app.logger.info('Login by user: ' + form.username.data)
         if user is None or not user.check_password(form.password.data):
+            app.logger.warning('Login error home by user - Invalid username or password')
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
@@ -88,9 +89,10 @@ def login():
 @app.route(Config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
     if request.args.get('state') != session.get("state"):
-        app.logger.info('Login by user admin')
+        app.logger.warning('Login by user admin')
         return redirect(url_for("home"))  # No-OP. Goes back to Index page
     if "error" in request.args:  # Authentication/Authorization failure
+        app.logger.warning('Login error home by user')
         return render_template("auth_error.html", result=request.args)
     if request.args.get('code'):
         cache = _load_cache()
