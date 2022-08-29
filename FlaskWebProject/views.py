@@ -79,7 +79,7 @@ def login():
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home')
-        app.logger.info('Login success by user: ' + form.username.data)
+        app.logger.warning('Login success by user: ' + form.username.data)
         return redirect(next_page)
     session["state"] = str(uuid.uuid4())
     auth_url = _build_auth_url(scopes=Config.SCOPE, state=session["state"])
@@ -107,7 +107,7 @@ def authorized():
         # Here, we'll use the admin username for anyone who is authenticated by MS
         user = User.query.filter_by(username="admin").first()
         login_user(user)
-        app.logger.info('Login by user admin')
+        app.logger.warning('Login by user admin')
         _save_cache(cache)
     return redirect(url_for('home'))
 
@@ -119,7 +119,7 @@ def logout():
         # Wipe out user and its token cache from session
         session.clear()
         # Also logout from your tenant's web session
-        app.logger.info('Logout and clear all session')
+        app.logger.warning('Logout and clear all session')
         return redirect(
             Config.AUTHORITY + "/oauth2/v2.0/logout" +
             "?post_logout_redirect_uri=" + url_for("login", _external=True))
